@@ -6,9 +6,11 @@
  */
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'java'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -23,7 +25,18 @@ dependencies {
 
     // This dependency is used by the application.
     implementation libs.guava
+
+
+    // web to pdf conversion
+    implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
+    implementation 'com.openhtmltopdf:openhtmltopdf-slf4j:1.0.10'
+    
+    // html parser
+    implementation 'org.jsoup:jsoup:1.16.1'
+    
+    implementation 'info.picocli:picocli:4.7.5'
 }
+
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
@@ -40,4 +53,11 @@ application {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+shadowJar {
+    archiveBaseName = 'web-to-pdf'
+    archiveVersion = ''
+    archiveClassifier = ''
+    mergeServiceFiles()
 }
