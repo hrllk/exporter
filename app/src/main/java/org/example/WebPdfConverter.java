@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 import picocli.CommandLine.Parameters;
+import picocli.CommandLine;
 
 /**
  * WebPdfConverter
@@ -32,6 +33,8 @@ public class WebPdfConverter implements Callable<Integer> {
 
 
         Document jsoupDoc = Jsoup.connect(url).get();
+        String css = "@font-face { font-family: 'NotoSansKR'; src: url('file:./NotoSansKR-Regular.ttf'); } body { font-family: NotoSansKR; }";
+        jsoupDoc.head().appendElement("style").text(css);
         jsoupDoc
             .outputSettings()
             .syntax(Document.OutputSettings.Syntax.xml);
@@ -43,28 +46,26 @@ public class WebPdfConverter implements Callable<Integer> {
 
         OutputStream outputStream = new FileOutputStream(output);
         PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
+        pdfBuilder.useFont(new File("~/Library/Fonts/D2Coding.ttf"), "D2Coding");
         pdfBuilder.withW3cDocument(w3cDoc, url);
         pdfBuilder.toStream(outputStream);
         pdfBuilder.run();
-        
 
 
-
-        
-
-            // try (OutputStream os = new FileOutputStream(output)) {
-            //     PdfRendererBuilder builder = new PdfRendererBuilder();
-            //     builder.withW3cDocument(w3cDoc, url);
-            //     builder.toStream(os);
-            //     builder.run();
-            // }
-            //
-            // System.out.println("Successfully created: " + output.getAbsolutePath());
-            // return 0;
-
-            
-		return null;
+		return 0;
 	}
+
+    public static void main(String[] args) {
+        String[] overrideArgs = {"http://alzar.duckdns.org:8090", System.getProperty("user.home") + "/" + "test.pdf"};
+        
+        int exitCode = new CommandLine(new WebPdfConverter()).execute(overrideArgs);
+        System.out.println("exitCode: " + exitCode);
+        System.exit(exitCode);
+        
+        // int exitCode = new CommandLine(new WebToPdfConverter()).execute(args);
+        // System.exit(exitCode);
+
+    }
     
 
     
