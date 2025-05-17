@@ -35,6 +35,11 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.16.1'
     
     implementation 'info.picocli:picocli:4.7.5'
+
+    // https://mvnrepository.com/artifact/com.github.kklisura.cdt/cdt-java-client
+//    implementation 'com.github.kklisura.cdt:cdt-java-client:4.0.0'
+//    implementation 'org.slf4j:slf4j-simple:2.0.9'
+    implementation 'com.microsoft.playwright:playwright:1.44.0'
 }
 
 
